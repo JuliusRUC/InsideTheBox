@@ -173,20 +173,7 @@ function drawWrongPopup() {
     return;
   }
 
-  push();
-  rectMode(CENTER);
-  fill(255, 255, 204, 240);
-  stroke(0);
-  strokeWeight(2);
-  rect(width / 2, height / 2 - 40, 260, 90, 10);
-  noStroke();
-  fill(200, 20, 20);
-  textAlign(CENTER, CENTER);
-  textStyle(BOLD);
-  textSize(34);
-  text('WRONG', width / 2, height / 2 - 40);
-  rectMode(CORNER);
-  pop();
+  drawAnswerPopup('Your answer is incorrect', color(170, 22, 22), wrongAnswerObservationNote);
 }
 
 function drawCorrectPopup() {
@@ -199,19 +186,57 @@ function drawCorrectPopup() {
     return;
   }
 
+  drawAnswerPopup('Your answer is correct', color(20, 170, 20), correctAnswerObservationNote);
+}
+
+function drawAnswerPopup(headerText, headerColor, observationText) {
   push();
+  resetMatrix();
   rectMode(CENTER);
+  textFont('Poppins');
+
+  let popupW = min(470, width - 70);
+  let popupH = 220;
+  let popupX = width / 2;
+  let popupY = height / 2 - 40;
+  let popupLeft = popupX - popupW / 2;
+  let popupTop = popupY - popupH / 2;
+
   fill(255, 255, 204, 240);
   stroke(0);
   strokeWeight(2);
-  rect(width / 2, height / 2 - 40, 260, 90, 10);
-  noStroke();
-  fill(20, 170, 20);
-  textAlign(CENTER, CENTER);
-  textStyle(BOLD);
-  textSize(34);
-  text('CORRECT', width / 2, height / 2 - 40);
+  rect(popupX, popupY, popupW, popupH, 12);
+
+  // Text rectangles use rectMode; switch back so text(x, y, w, h) uses top-left anchor.
   rectMode(CORNER);
+
+  noStroke();
+  fill(headerColor);
+  textAlign(CENTER, TOP);
+  textStyle(BOLD);
+  textSize(23);
+  text(headerText, popupX, popupTop + 16);
+
+  let textPadding = 18;
+  let noteX = popupLeft + textPadding;
+  let noteLabelY = popupTop + 64;
+  let bodyY = noteLabelY + 28;
+  let bodyW = popupW - textPadding * 2;
+  let bodyH = popupH - (bodyY - popupTop) - 14;
+
+  fill(48);
+  textAlign(LEFT, TOP);
+  textStyle(BOLD);
+  textSize(16);
+  text('Observation note', noteX, noteLabelY);
+
+  textStyle(NORMAL);
+  let bodySize = fitBodyTextSize(observationText, bodyW, bodyH, 14, 10);
+  textSize(bodySize);
+  textLeading(bodySize * 1.28);
+  textWrap(WORD);
+  text(observationText, noteX, bodyY, bodyW, bodyH);
+
   pop();
 }
 

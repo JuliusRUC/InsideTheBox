@@ -109,11 +109,11 @@ function handleInteractionDisplay() {
     textStyle(BOLD);
     fill(0);
     noStroke();
-    text('Press SPACE to look inside', player.x, player.y - player.radius - 10);
+    text('Press SPACE to observe the inside of the box', player.x, player.y - player.radius - 10);
     pop();
     
     // hvis spilleren har kigget ind og stadig er tæt på kassen, vis besked
-    let showScene1Message = currentScene === 1 && lookedInBox;
+    let showScene1Message = currentScene === 1 && isLookingInBox;
     let showScene2Message = currentScene === 2 && scene2LookedInBox;
     if (showScene1Message || showScene2Message) {
       push();
@@ -138,7 +138,7 @@ function handleInteractionDisplay() {
     if (currentScene === 2) {
       scene2LookedInBox = false;
     } else {
-      lookedInBox = false;
+      isLookingInBox = false;
     }
   }
 
@@ -205,7 +205,7 @@ function keyPressed() {
       // interaktioner udløses med mellemrumstasten
       let d = dist(player.x, player.y, boxObj.x, boxObj.y);
       if (d < player.radius + boxObj.size / 2 + 8) {
-        lookedInBox = true;
+        isLookingInBox = true;
         hasCheckedBox = true;
         interactionPoints += 1;
       }
@@ -237,6 +237,7 @@ function handleConsoleAnswer(consoleObj) {
     }
 
     correctConsoleObj = null;
+    setWrongObservationNoteForAnswer(consoleObj);
     wrongConsoleObj = consoleObj;
     return;
   }
@@ -254,6 +255,7 @@ function handleConsoleAnswer(consoleObj) {
   if (consoleObj.label === correctLabel) {
     wrongConsoleObj = null;
     correctConsoleObj = consoleObj;
+    setCorrectObservationNoteForAnswer(consoleObj);
 
     if (!hasCheckedBox && consoleObj.label === 'Both/neither') {
       scene2CatStatus = 'alive';
@@ -276,7 +278,33 @@ function handleConsoleAnswer(consoleObj) {
   }
 
   correctConsoleObj = null;
+  setWrongObservationNoteForAnswer(consoleObj);
   wrongConsoleObj = consoleObj;
+}
+
+function setCorrectObservationNoteForAnswer(consoleObj) {
+  correctAnswerObservationNote = 'Your choice matches the expected outcome.';
+
+  if (currentScene === 1 && !hasCheckedBox && consoleObj.label === 'Both/neither') {
+    correctAnswerObservationNote =
+      'The outcome depends on whether the atom decays.\n' +
+      'Before the box is observed, the mouse has no definite state.\n' +
+      'In this thought experiment the mouse is therefore both and neither dead nor alive.';
+  }
+}
+
+function setWrongObservationNoteForAnswer(consoleObj) {
+  wrongAnswerObservationNote = '[Reason of incorrect]';
+
+  if (currentScene === 1 && !hasCheckedBox && consoleObj.label === 'Either or') {
+    wrongAnswerObservationNote = 'A 50% chance does not mean the outcome is already decided.';
+    return;
+  }
+
+  if (currentScene === 1 && !hasCheckedBox && (consoleObj.label === 'Alive' || consoleObj.label === 'Dead')) {
+    let selectedState = consoleObj.label.toLowerCase();
+    wrongAnswerObservationNote = 'How do you know that the mouse is ' + selectedState + ' without looking inside the box?';
+  }
 }
 
 function mousePressed() {

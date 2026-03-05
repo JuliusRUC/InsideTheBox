@@ -43,7 +43,7 @@ let hammerObj = {
 
 
 // boolsk flag der sættes, når spilleren kigger i kassen
-let lookedInBox = false;
+let isLookingInBox = false;
 let hasCheckedBox = false;
 
 // kassens tilstand i scene 2 (kattens udfald afhænger af valg i level 1)
@@ -53,6 +53,8 @@ let scene2CatStatus = 'alive'; // 'alive' eller 'dead'
 // tilstand for forkert-svar-popup (bliver vist indtil spilleren går væk fra den trykkede knap)
 let wrongConsoleObj = null;
 let correctConsoleObj = null;
+let wrongAnswerObservationNote = '[Reason of incorrect]';
+let correctAnswerObservationNote = 'Your choice matches the expected outcome.';
 
 // scene 1-overgangshjælp til Both/neither-stien
 let hammerVisible = true;

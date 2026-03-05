@@ -23,13 +23,14 @@ function startHammerDropAwaySequence() {
 function resetToLevel1State(randomizeMouse = true) {
   currentScene = 1;
 
-  lookedInBox = false;
+  isLookingInBox = false;
   hasCheckedBox = false;
   scene2LookedInBox = false;
   scene2CatStatus = 'alive';
 
   wrongConsoleObj = null;
   correctConsoleObj = null;
+  correctAnswerObservationNote = 'Your choice matches the expected outcome.';
 
   hammerVisible = true;
   pendingScene2At = 0;
