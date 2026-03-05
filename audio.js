@@ -206,6 +206,10 @@ function syncMusicStateForCurrentScene() {
   if (!musicStartedByUser) return;
 
   if (shouldPlayGameplayMusic) {
+    if (backgroundMusic && currentScene === 1 && restartGameplayMusicOnNextPlay) {
+      backgroundMusic.currentTime = 0;
+      restartGameplayMusicOnNextPlay = false;
+    }
     playTrack(backgroundMusic);
     pauseTrack(menuOutroMusic);
     return;

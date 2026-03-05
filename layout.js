@@ -73,6 +73,7 @@ function processPendingSceneShift() {
   pendingScene2At = 0;
   currentScene = 2;
   scene2LookedInBox = false;
+  scene2HasCheckedBox = false;
   infoVisible = true;
   startScene2WakeSequence();
   placePlayerAtCorridorStart();

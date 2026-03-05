@@ -48,6 +48,7 @@ let hasCheckedBox = false;
 
 // kassens tilstand i scene 2 (kattens udfald afhænger af valg i level 1)
 let scene2LookedInBox = false;
+let scene2HasCheckedBox = false;
 let scene2CatStatus = 'alive'; // 'alive' eller 'dead'
 
 // tilstand for forkert-svar-popup (bliver vist indtil spilleren går væk fra den trykkede knap)
@@ -91,6 +92,7 @@ let musicVolume = 0.18;
 let musicSliderDragging = false;
 let soundIconImage = null;
 let restartMenuOutroMusicOnNextPlay = false;
+let restartGameplayMusicOnNextPlay = false;
 
 // score: +1 hver gang spilleren interagerer med et interagerbart objekt
 let interactionPoints = 0;

@@ -26,6 +26,7 @@ function resetToLevel1State(randomizeMouse = true) {
   isLookingInBox = false;
   hasCheckedBox = false;
   scene2LookedInBox = false;
+  scene2HasCheckedBox = false;
   scene2CatStatus = 'alive';
 
   wrongConsoleObj = null;
@@ -66,6 +67,7 @@ function startGameFromMenu() {
   gameState = 'playing';
   startPanel.hide();
   hideOutroPanel();
+  restartGameplayMusicOnNextPlay = true;
   startMusicFromUserGesture();
 }
 // Funktion for at starte spillet igen med "Play again" knappen i outro.
@@ -75,6 +77,7 @@ function playAgainFromOutro() {
   startPanel.hide();
   hideOutroPanel();
   restartMenuOutroMusicOnNextPlay = true;
+  restartGameplayMusicOnNextPlay = true;
   startMusicFromUserGesture();
 }
 // Funktion for at gå tilbage til menuen fra outro

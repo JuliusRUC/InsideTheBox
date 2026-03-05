@@ -185,6 +185,7 @@ function keyPressed() {
         let dScene2 = dist(player.x, player.y, boxObj.x, boxObj.y);
         if (dScene2 < player.radius + boxObj.size / 2 + 8) {
           scene2LookedInBox = true;
+          scene2HasCheckedBox = true;
           interactionPoints += 1;
         }
 
@@ -229,6 +230,7 @@ function handleConsoleAnswer(consoleObj) {
       wrongConsoleObj = null;
       correctConsoleObj = null;
       scene2LookedInBox = false;
+      scene2HasCheckedBox = false;
       currentScene = 3;
       infoVisible = false;
       restartMenuOutroMusicOnNextPlay = true;
@@ -272,6 +274,7 @@ function handleConsoleAnswer(consoleObj) {
     scene2CatStatus = 'alive';
     currentScene = 2;
     scene2LookedInBox = false;
+    scene2HasCheckedBox = false;
     infoVisible = true;
     startScene2WakeSequence();
     return;
@@ -285,16 +288,62 @@ function handleConsoleAnswer(consoleObj) {
 function setCorrectObservationNoteForAnswer(consoleObj) {
   correctAnswerObservationNote = 'Your choice matches the expected outcome.';
 
+  if (currentScene === 1 && hasCheckedBox) {
+    correctAnswerObservationNote =
+      mouseStatus === 'alive'
+        ? 'You observed the mouse and it was alive'
+        : 'You observed the mouse and it was dead';
+    return;
+  }
+
   if (currentScene === 1 && !hasCheckedBox && consoleObj.label === 'Both/neither') {
     correctAnswerObservationNote =
-      'The outcome depends on whether the atom decays.\n' +
-      'Before the box is observed, the mouse has no definite state.\n' +
-      'In this thought experiment the mouse is therefore both and neither dead nor alive.';
+      'The mouse is in a superposition of states.';
   }
 }
 
 function setWrongObservationNoteForAnswer(consoleObj) {
   wrongAnswerObservationNote = '[Reason of incorrect]';
+
+  if (currentScene === 2 && scene2HasCheckedBox) {
+    wrongAnswerObservationNote =
+      scene2CatStatus === 'alive'
+        ? 'You just observed the cat and it was alive'
+        : 'You just observed the cat and it was dead';
+    return;
+  }
+
+  if (currentScene === 2 && scene2CatStatus === 'alive') {
+    if (consoleObj.label === 'Either or' || consoleObj.label === 'Both/neither') {
+      wrongAnswerObservationNote = "Are you really sure that you haven't already observed the cat?";
+      return;
+    }
+
+    if (consoleObj.label === 'Dead') {
+      wrongAnswerObservationNote = 'Be more observative in level 1';
+      return;
+    }
+  }
+
+  if (currentScene === 2 && scene2CatStatus === 'dead') {
+    if (consoleObj.label === 'Either or' || consoleObj.label === 'Both/neither') {
+      wrongAnswerObservationNote = "Are you really sure that you haven't already observed the cat?";
+      return;
+    }
+
+    if (consoleObj.label === 'Alive') {
+      wrongAnswerObservationNote = 'Be more observative in level 1';
+      return;
+    }
+  }
+
+  if (currentScene === 1 && hasCheckedBox) {
+    wrongAnswerObservationNote =
+      mouseStatus === 'alive'
+        ? 'You have just observed the mouse and it was alive.'
+        : 'You have just observed the mouse and it was dead.';
+    return;
+  }
 
   if (currentScene === 1 && !hasCheckedBox && consoleObj.label === 'Either or') {
     wrongAnswerObservationNote = 'A 50% chance does not mean the outcome is already decided.';
