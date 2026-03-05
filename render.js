@@ -12,7 +12,7 @@ function drawInteractionPoints() {
 
 function drawBottomRightHud() {
   push();
-  fill(255);
+  fill(0);
   textSize(12);
   textAlign(RIGHT, BOTTOM);
   text('Use ESC to toggle the information box on/off', width - wallThickness - 10, height - wallThickness - 10);
@@ -32,12 +32,12 @@ function drawBottomRightHud() {
   fill('#ff8c42');
   circle(knobX, layout.sliderY, musicSliderDragging ? 16 : 14);
 
-  // sound icon (orange) from PNG asset
+  // lydikon (orange) fra PNG-asset
   if (soundIconImage) {
     imageMode(CENTER);
     image(soundIconImage, layout.iconX - 2, layout.iconY + 0.5, 23, 23);
   } else {
-    // fallback while icon loads
+    // fallback mens ikonet indlæses
     noStroke();
     fill('#ff8c42');
     rectMode(CENTER);
@@ -249,31 +249,31 @@ function drawScene2Scientist() {
   push();
   translate(scientistX, scientistY);
 
-  // legs
+  // ben
   stroke(25);
   strokeWeight(5);
   line(-9, 28, -12, 64);
   line(9, 28, 12, 64);
 
-  // shoes
+  // sko
   noStroke();
   fill(30);
   ellipse(-12, 66, 16, 7);
   ellipse(12, 66, 16, 7);
 
-  // lab coat body
+  // kittel-krop
   rectMode(CENTER);
   fill(250);
   stroke(40);
   strokeWeight(2);
   rect(0, 8, 42, 52, 8);
 
-  // coat split
+  // kittel-split
   stroke(180);
   strokeWeight(1.5);
   line(0, -12, 0, 31);
 
-  // shirt + tie
+  // skjorte + slips
   noStroke();
   fill(60, 150, 235);
   rect(0, -1, 16, 18, 3);
@@ -281,35 +281,35 @@ function drawScene2Scientist() {
   triangle(0, -8, -4, 5, 4, 5);
   triangle(0, 5, -3, 14, 3, 14);
 
-  // arms
+  // arme
   stroke(250);
   strokeWeight(8);
   line(-18, -3, -30, 18);
   line(18, -3, 30, 18);
 
-  // hands
+  // hænder
   noStroke();
   fill(245, 210, 175);
   circle(-30, 18, 10);
   circle(30, 18, 10);
 
-  // neck
+  // hals
   rectMode(CENTER);
   fill(245, 210, 175);
   rect(0, -25, 10, 10, 2);
 
-  // head
+  // hoved
   fill(245, 210, 175);
   stroke(35);
   strokeWeight(2);
   circle(0, -40, 34);
 
-  // hair
+  // hår
   noStroke();
   fill(45);
   arc(0, -45, 34, 24, PI, TWO_PI, CHORD);
 
-  // glasses
+  // briller
   noFill();
   stroke(35);
   strokeWeight(2);
@@ -317,13 +317,13 @@ function drawScene2Scientist() {
   circle(7, -40, 9);
   line(-2.5, -40, 2.5, -40);
 
-  // eyes
+  // øjne
   noStroke();
   fill(35);
   circle(-7, -40, 2.5);
   circle(7, -40, 2.5);
 
-  // smile
+  // smil
   noFill();
   stroke(35);
   strokeWeight(1.5);
@@ -334,17 +334,17 @@ function drawScene2Scientist() {
 }
 
 function drawFloorLevel1() {
-  // carton box brown background
+  // brun baggrund som papkasse
   noStroke();
-  fill(180, 140, 80); // brown color resembling cardboard
+  fill(180, 140, 80); // brun farve der ligner pap
   rect(0, 0, width, height);
   
-  // deterministic texture grid for carton feel (no flickering)
+  // deterministisk teksturgitter for papfornemmelse (ingen flimren)
   fill(170, 130, 70);
   let spacing = 60;
   for (let x = 0; x < width; x += spacing) {
     for (let y = 0; y < height; y += spacing) {
-      // offset every other row for a staggered pattern
+      // forskyd hver anden række for et forskudt mønster
       let offsetX = (Math.floor(y / spacing) % 2) * 30;
       rect(x + offsetX, y, 40, 12, 2);
     }
@@ -353,12 +353,12 @@ function drawFloorLevel1() {
 }
 
 function drawFloorLevel2() {
-  // base color white
+  // grundfarve hvid
   noStroke();
   fill(240);
   rect(0, 0, width, height);
 
-  // grid lines for tiles (black)
+  // gitterlinjer til fliser (sort)
   stroke(0);
   strokeWeight(1);
   let sz = 50;
@@ -381,28 +381,28 @@ function drawPlayer() {
 }
 
 function drawCatPlayer() {
-  // simple cartoon cat: head + body + tail
+  // simpel tegneserie-kat: hoved + krop + hale
   push();
   translate(player.x, player.y);
 
-  // body
+  // krop
   noStroke();
-  fill(0); // black
+  fill(0); // sort
   ellipse(0, player.radius * 0.5, player.radius * 1.5, player.radius * 1.2);
 
-  // head
+  // hoved
   circle(0, -player.radius * 0.3, player.radius * 1.1);
 
-  // ears
+  // ører
   triangle(-player.radius * 0.4, -player.radius * 0.9, -player.radius * 0.2, -player.radius * 1.4, -player.radius * 0.1, -player.radius * 0.6);
   triangle(player.radius * 0.4, -player.radius * 0.9, player.radius * 0.2, -player.radius * 1.4, player.radius * 0.1, -player.radius * 0.6);
 
-  // eyes
+  // øjne
   fill("white");
   circle(-player.radius * 0.2, -player.radius * 0.3, player.radius * 0.15);
   circle(player.radius * 0.2, -player.radius * 0.3, player.radius * 0.15);
 
-  // tail
+  // hale
   stroke("black");
   strokeWeight(4);
   noFill();
@@ -415,36 +415,36 @@ function drawCatPlayer() {
 }
 
 function drawHumanPlayer() {
-  // simple cartoon human in the same minimal style as the cat
+  // simpelt tegneserie-menneske i samme minimalistiske stil som katten
   push();
   translate(player.x, player.y);
 
-  // body (shirt)
+  // krop (skjorte)
   noStroke();
   fill(0);
   rectMode(CENTER);
   rect(0, player.radius * 0.45, player.radius * 1.1, player.radius * 1.45, 8);
 
-  // head
+  // hoved
   fill(245, 210, 175);
   circle(0, -player.radius * 0.55, player.radius * 0.95);
 
-  // hair
+  // hår
   fill(30);
   arc(0, -player.radius * 0.66, player.radius * 0.95, player.radius * 0.72, PI, TWO_PI, CHORD);
 
-  // eyes
+  // øjne
   fill(255);
   circle(-player.radius * 0.14, -player.radius * 0.58, player.radius * 0.12);
   circle(player.radius * 0.14, -player.radius * 0.58, player.radius * 0.12);
 
-  // arms
+  // arme
   stroke(0);
   strokeWeight(4);
   line(-player.radius * 0.52, player.radius * 0.22, -player.radius * 0.88, player.radius * 0.72);
   line(player.radius * 0.52, player.radius * 0.22, player.radius * 0.88, player.radius * 0.72);
 
-  // legs
+  // ben
   line(-player.radius * 0.22, player.radius * 1.05, -player.radius * 0.22, player.radius * 1.55);
   line(player.radius * 0.22, player.radius * 1.05, player.radius * 0.22, player.radius * 1.55);
 
@@ -453,9 +453,9 @@ function drawHumanPlayer() {
 }
 
 
-// overlay shown before the game starts; semi‑transparent black box
+// overlay vist før spillet starter; semitransparent sort boks
 function drawIntroOverlay() {
-  if (!infoVisible) return; // nothing to draw when overlay closed
+  if (!infoVisible) return; // intet at tegne når overlay er lukket
 
   let overlayHeader = currentScene === 2 ? LEVEL2_HEADER : INTRO_HEADER;
   let overlayBody = currentScene === 2 ? LEVEL2_BODY : INTRO_BODY;
@@ -465,14 +465,14 @@ function drawIntroOverlay() {
   let w = constrain(width * 0.7, 320, roomInnerWidth - 20);
   let h = constrain(roomInnerHeight * 0.5, 185, 360);
   let x = width / 2 - w / 2;
-  // want overlay above the box and consoles
+  // vi vil have overlayet over kassen og konsollerne
   let aboveBox = boxObj.y - boxObj.size / 2 - h - 20;
-  let highestConsole = height; // start bottommost
+  let highestConsole = height; // start nederst
   for (let c of consoles) {
     highestConsole = min(highestConsole, c.y - c.h / 2 - h - 20);
   }
   let y = min(aboveBox, highestConsole);
-  // don't run into top wall / bottom wall
+  // undgå at ramme topvæg / bundvæg
   y = max(y, wallThickness + 12);
   y = min(y, height - wallThickness - h - 12);
 
@@ -481,25 +481,25 @@ function drawIntroOverlay() {
   noStroke();
   rect(x, y, w, h, 8);
 
-  fill('#ff8c42'); // orange like start screen
+  fill('#ff8c42'); // orange som startskærmen
   textFont('Poppins');
 
   let headerSize = constrain(h * 0.09, 16, 22);
   let contextSize = constrain(h * 0.08, 14, 19);
   let bodyStartSize = constrain(h * 0.067, 12, 17);
 
-  // header
+  // overskrift
   textSize(headerSize);
   textStyle(BOLD);
   textAlign(CENTER, TOP);
   text(overlayHeader, x + w / 2, y + 12);
 
-  // body – draw the first line (context) separately so it can be larger/orange
+  // brødtekst – tegn første linje (context) separat så den kan være større/orange
   let lines = overlayBody.split('\n');
   let firstLine = lines.shift();
   let rest = lines.join('\n');
 
-  // context title
+  // context-titel
   fill('#ff8c42');
   textSize(contextSize);
   textStyle(BOLD);
@@ -507,7 +507,7 @@ function drawIntroOverlay() {
   let contextY = y + 12 + headerSize + 8;
   text(firstLine, x + 12, contextY);
 
-  // remaining body text
+  // resterende brødtekst
   fill(255);
   let bodyY = contextY + contextSize + 8;
   let bodyW = w - 24;
@@ -519,19 +519,19 @@ function drawIntroOverlay() {
   textAlign(LEFT, TOP);
   text(rest, x + 12, bodyY, bodyW, bodyH);
 
-  // ESC key indicator in top right corner
+  // ESC-indikator i øverste højre hjørne
   let escBoxW = constrain(w * 0.09, 42, 56);
   let escBoxH = constrain(h * 0.125, 24, 34);
   let escBoxX = x + w - escBoxW - 10;
   let escBoxY = y + 10;
   
-  // ESC box background
+  // baggrund til ESC-boks
   stroke(255);
   strokeWeight(2);
   fill(0);
   rect(escBoxX, escBoxY, escBoxW, escBoxH, 4);
   
-  // ESC text
+  // ESC-tekst
   noStroke();
   fill(255);
   textSize(constrain(escBoxH * 0.45, 11, 14));
@@ -539,7 +539,7 @@ function drawIntroOverlay() {
   textAlign(CENTER, CENTER);
   text('ESC', escBoxX + escBoxW / 2, escBoxY + escBoxH / 2);
 
-  // footer removed – instructions toggled via ESCAPE key
+  // footer fjernet – instruktioner toggles med ESCAPE-tasten
 
   pop();
 }
@@ -604,7 +604,7 @@ function drawRoom() {
   for (let c of consoles) {
     drawConsole(c);
   }
-  // no wall text
+  // ingen vægtekst
 }
 
 function drawScene2WakeOverlay() {
@@ -625,13 +625,13 @@ function drawScene2WakeOverlay() {
   fill(0, overlayAlpha);
   rect(0, 0, width, height);
 
-  // stars on top of dark overlay (same visual style as game start)
+  // stjerner oven på mørkt overlay (samme visuelle stil som ved spilstart)
   for (let s of stars) {
     fill(255, overlayAlpha);
     circle(s.x, s.y, s.size);
   }
 
-  // large centered orange text with black outline
+  // stor centreret orange tekst med sort kontur
   stroke(0, overlayAlpha);
   strokeWeight(5);
   fill(255, 140, 66, overlayAlpha);
@@ -639,7 +639,7 @@ function drawScene2WakeOverlay() {
   textStyle(BOLD);
   textSize(52);
 
-  // manual wrapping to keep text truly centered on canvas
+  // manuel linjebrydning for at holde teksten helt centreret på canvas
   let maxLineWidth = width * 0.8;
   let words = SCENE2_WAKE_TEXT.split(' ');
   let lines = [];
@@ -667,17 +667,17 @@ function drawScene2WakeOverlay() {
 }
 
 function drawHammer() {
-  // draw a vertical hammer to the right of the vial, scaled to vial size
-  // compute sizes relative to the vial so proportions stay consistent
+  // tegn en lodret hammer til højre for hætteglasset, skaleret efter hætteglassets størrelse
+  // beregn størrelser relativt til hætteglasset så proportionerne bevares
   let handleLen = vialObj.h * 1.28;
   let handleW = max(8, vialObj.w * 0.27);
-  // make the head smaller so it doesn't dominate the handle
+  // gør hovedet mindre så det ikke dominerer skaftet
   let headW = vialObj.w * 1.28;
   let headH = vialObj.w * 0.56;
-  // increase spacing so head does not overlap the vial
+  // øg afstanden så hovedet ikke overlapper hætteglasset
   let spacing = vialObj.w * 1.38;
 
-  // center position for hammer (to the right of vial)
+  // centerposition for hammer (til højre for hætteglasset)
   let hx = vialObj.x + vialObj.w / 2 + spacing + handleW / 2;
   let hy = vialObj.y;
   let hammerAngle = 0;
@@ -692,7 +692,7 @@ function drawHammer() {
       hy = lerp(hy, impactY, t);
       hammerAngle = lerp(0, -PI * 0.72, t);
     } else {
-      // fall away from the vial (down-right) so no impact occurs
+      // fald væk fra hætteglasset (ned-højre), så der ikke sker et slag
       let fallX = hx + vialObj.w * 1.1;
       let fallY = hy + vialObj.h * 0.98;
       hx = lerp(hx, fallX, t);
@@ -706,19 +706,19 @@ function drawHammer() {
   rotate(hammerAngle);
   rectMode(CENTER);
 
-  // handle (vertical)
+  // skaft (lodret)
   noStroke();
   fill(120, 70, 30);
   rect(0, 0, handleW, handleLen, 4);
 
-  // head at the top of the handle
+  // hoved i toppen af skaftet
   noStroke();
   fill(70);
-  // position head so its center sits slightly above the top of the handle
+  // placér hovedet så centrum ligger lidt over toppen af skaftet
   let headY = -handleLen / 2 - headH / 2 + 6;
   rect(0, headY, headW, headH, 3);
 
-  // small claw/back part on the left side of the head (no stroke)
+  // lille klo/bagdel på venstre side af hovedet (uden streg)
   fill(60);
   rect(-headW * 0.42, headY + headH * 0.12, headW * 0.36, headH * 0.34, 3);
 
@@ -735,43 +735,43 @@ function drawVial() {
   push();
   translate(vialObj.x, vialObj.y);
 
-  // bottle body
+  // flaske-krop
   noStroke();
   fill(40);
-  // outer glass shadow
+  // ydre glasskygge
   rectMode(CENTER);
   rect(0, 0, vialObj.w + 6, vialObj.h + 10, 6);
 
-  // glass (slightly transparent)
+  // glas (let transparent)
   fill(220, 255, 240, 180);
   rect(0, 0, vialObj.w, vialObj.h, 6);
 
-  // liquid inside (bright green)
+  // væske indeni (kraftig grøn)
   fill(50, 220, 80);
   rect(0, vialObj.h * 0.12, vialObj.w * 0.9, vialObj.h * 0.55, 4);
 
-  // bottle neck
+  // flaskehals
   fill(200);
   rect(0, -vialObj.h * 0.55, vialObj.w * 0.5, vialObj.h * 0.25, 4);
 
-  // skull symbol (centered on bottle)
+  // dødningehoved-symbol (centreret på flasken)
   push();
   translate(0, -vialObj.h * 0.02);
-  // skull head (scale with vial size)
+  // dødningehoved (skaleres med hætteglassets størrelse)
   let skullSize = constrain(vialObj.w * 0.45, 10, 36);
   fill(255);
   ellipse(0, -skullSize * 0.18, skullSize, skullSize);
-  // eyes
+  // øjne
   fill(0);
   let eyeX = skullSize * 0.18;
   let eyeY = -skullSize * 0.35;
   ellipse(-eyeX, eyeY, skullSize * 0.18, skullSize * 0.28);
   ellipse(eyeX, eyeY, skullSize * 0.18, skullSize * 0.28);
-  // teeth (simple rectangle block)
+  // tænder (simpel rektangelblok)
   rectMode(CENTER);
   rect(0, skullSize * 0.18, skullSize * 0.45, skullSize * 0.18);
 
-  // crossbones scaled
+  // krydsede knogler skaleret
   stroke(255);
   strokeWeight(max(1, skullSize * 0.08));
   noFill();
@@ -804,31 +804,31 @@ function drawWalls() {
   let corridor = getBottomCorridorBounds();
   let corridorY = height - wallThickness;
 
-  // draw a thick border around the room to simulate walls
+  // tegn en tyk kant rundt om rummet for at simulere vægge
   noStroke();
-  fill(100); // lighter gray
-  // top wall
+  fill(100); // lysere grå
+  // topvæg
   rect(0, 0, width, wallThickness);
 
-  // left wall
+  // venstre væg
   rect(0, 0, wallThickness, height);
-  // right wall
+  // højre væg
   rect(width - wallThickness, 0, wallThickness, height);
 
   if (currentScene === 2) {
-    // bottom wall with a small corridor opening in the middle
+    // bundvæg med en lille korridoråbning i midten
     rect(0, corridorY, corridor.x, wallThickness);
     rect(corridor.x + corridor.w, corridorY, width - (corridor.x + corridor.w), wallThickness);
 
-    // corridor side walls
+    // korridorens sidevægge
     rect(corridor.x - 12, corridorY, 12, wallThickness);
     rect(corridor.x + corridor.w, corridorY, 12, wallThickness);
   } else {
-    // closed bottom wall in level 1
+    // lukket bundvæg i level 1
     rect(0, corridorY, width, wallThickness);
   }
 
-  // wall shadows (inner) - simple bottom shadow band
+  // vægskygger (indre) - simpelt skyggebånd i bunden
   fill(0, 25);
   if (currentScene === 2) {
     let shadowY = height - wallThickness * 1.3;
@@ -845,7 +845,7 @@ function drawWalls() {
   rect(wallThickness, wallThickness, wallThickness * 0.3, height - wallThickness * 2);
   rect(width - wallThickness * 1.3, wallThickness, wallThickness * 0.3, height - wallThickness * 2);
 
-  // (highlight band removed per request)
+  // (highlight-bånd fjernet efter ønske)
 }
 
 function drawBox() {
@@ -853,11 +853,11 @@ function drawBox() {
   translate(boxObj.x, boxObj.y);
   rectMode(CENTER);
   
-  // main box body - darker brown cardboard
+  // hoveddelen af kassen - mørkere brun pap
   fill(100, 65, 35);
   rect(0, 0, boxObj.size, boxObj.size);
   
-  // cardboard ridges/texture on main box
+  // pap-riller/tekstur på hovedkassen
   stroke(80, 50, 25);
   strokeWeight(2);
   line(-boxObj.size * 0.35, -boxObj.size * 0.35, -boxObj.size * 0.35, boxObj.size * 0.35);
@@ -869,18 +869,18 @@ function drawBox() {
 }
 
 function drawConsole(c) {
-  // simple circular button with black outline and red fill
+  // simpel cirkulær knap med sort kontur og rød fyld
   push();
   translate(c.x, c.y);
   ellipseMode(CENTER);
 
-  // outline
+  // kontur
   stroke(0);
   strokeWeight(6);
   fill(180, 40, 40);
   circle(0, 0, c.w);
 
-  // label centered
+  // label centreret
   noStroke();
   fill(255);
   textAlign(CENTER, CENTER);

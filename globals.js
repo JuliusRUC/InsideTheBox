@@ -1,10 +1,10 @@
-// general game globals and helpers
+// Generelle variabler og konstanter for spillet
 
-// game state: 'start' or 'playing' etc.
+// spiltilstand: 'start' eller 'playing' osv.
 let gameState = 'start';
 let currentScene = 1;
 
-// player object holds position, radius and speed
+// spiller-objekt med position, radius og hastighed
 let player = {
   x: 0,
   y: 0,
@@ -12,24 +12,24 @@ let player = {
   speed: 4
 };
 
-// box object the player can interact with
+// kasse-objekt som spilleren kan interagere med
 let boxObj = {
   x: 0,
   y: 0,
   size: 100
 };
 
-// vial object (poison flask) to draw in the room
+// hætteglas-objekt (giftflaske), som tegnes i rummet
 let vialObj = {
   x: 0,
   y: 0,
-  // larger by default
+  // større som standard
   w: 66,
   h: 106
 };
-// hammer object (placed to the right of the vial)
+// hammer-objekt (placeret til højre for hætteglasset)
 let hammerObj = {
-  x: vialObj.x + vialObj.w, // Positioning hammer to the right of the vial
+  x: vialObj.x + vialObj.w, // Placerer hammeren til højre for hætteglasset
   y: 0,
   handleLen: 78,
   handleW: 10,
@@ -37,58 +37,63 @@ let hammerObj = {
   headH: 22
 };
 
-// door positioning and dimensions
-// (Door removed — room will be closed)
+// dørens placering og dimensioner
+// (Dør fjernet — rummet er lukket)
 
 
 
-// boolean flag set when player looks in box
+// boolsk flag der sættes, når spilleren kigger i kassen
 let lookedInBox = false;
 let hasCheckedBox = false;
 
-// scene 2 box state (cat outcome depends on level 1 path)
+// kassens tilstand i scene 2 (kattens udfald afhænger af valg i level 1)
 let scene2LookedInBox = false;
-let scene2CatStatus = 'alive'; // 'alive' or 'dead'
+let scene2CatStatus = 'alive'; // 'alive' eller 'dead'
 
-// wrong answer popup state (stays until player moves away from the pressed button)
+// tilstand for forkert-svar-popup (bliver vist indtil spilleren går væk fra den trykkede knap)
 let wrongConsoleObj = null;
 let correctConsoleObj = null;
 
-// scene-1 transition helper for Both/neither path
+// scene 1-overgangshjælp til Both/neither-stien
 let hammerVisible = true;
 let pendingScene2At = 0;
 
-// hammer smash sequence when correct answer is given after checking the box
+// hammer-knuse-sekvens når korrekt svar gives efter at have kigget i kassen
 let hammerSmashActive = false;
 let hammerSmashStartedAt = 0;
 let hammerAnimationMode = 'smash'; // 'smash' | 'drop-away'
 const HAMMER_SMASH_DURATION = 700;
-const EXTRA_SCENE_SHIFT_DELAY = 0;
+const HAMMER_GLASS_BREAK_ADVANCE_MS = 500;
+const EXTRA_SCENE_SHIFT_DELAY = 1500;
 let vialBroken = false;
 
-// mouse status: determined randomly at game start, stays the same throughout session
-let mouseStatus = 'alive'; // 'alive' or 'dead'
+// musens tilstand: bestemmes tilfældigt ved spilstart og forbliver den samme i hele sessionen
+let mouseStatus = 'alive'; // 'alive' eller 'dead'
 
-// info overlay toggle (opened/closed with ESCAPE key)
+// skift af info-overlay (åbnes/lukkes med ESCAPE-tasten)
 let infoVisible = true;
 
-// background music configuration/state
+// konfiguration/tilstand for baggrundsmusik
 const GAMEPLAY_MUSIC_FILE_PATH = 'assets/audio/bensound-enigmatic.mp3';
 const MENU_OUTRO_MUSIC_FILE_PATH = 'assets/audio/bensound-sleepless.mp3';
+const GLASS_BREAK_SFX_FILE_PATH = 'assets/audio/dragon-studio-glass-breaking-386153.mp3';
+const THUD_IMPACT_SFX_FILE_PATH = 'assets/audio/Virtual_vibes-thud-impact-sound-sfx-379990.mp3';
 const MUSIC_ATTRIBUTION_TEXT = 'Music by Benjamin Tissot (Bensound) • License code: ND1RUAAXDVWT4555 • https://www.bensound.com/free-music-for-videos';
 const MUSIC_ATTRIBUTION_TEXT_2 = 'Music by Diffie Bosman (Bensound) • License code: TT5GZWM1WTTH3EQE • https://www.bensound.com/free-music-for-videos';
 const SOUND_ICON_FILE_PATH = 'assets/icons/volume-up.png';
 let backgroundMusic = null;
+let glassBreakSfx = null;
+let thudImpactSfx = null;
 let musicStartedByUser = true;
 let musicVolume = 0.18;
 let musicSliderDragging = false;
 let soundIconImage = null;
 let restartMenuOutroMusicOnNextPlay = false;
 
-// score: +1 each time player interacts with an interactable object
+// score: +1 hver gang spilleren interagerer med et interagerbart objekt
 let interactionPoints = 0;
 
-// initial overlay text shown at game start
+// indledende overlay-tekst vist ved spilstart
 const INTRO_HEADER = 'LEVEL 1';
 const INTRO_BODY = `Context
 Inside the brown crate in the center of the room is a radioactive atom, a geiger counter, a hammer, a vial of deadly poison, and a mouse.
@@ -110,10 +115,10 @@ const SCENE2_WAKE_HOLD_DURATION = 2200;
 const SCENE2_WAKE_FADE_DURATION = 1800;
 let scene2WakeActive = false;
 let scene2WakeStartedAt = 0;
-// footer text removed; overlay controlled by ESCAPE key
+// footertekst fjernet; overlay styres med ESCAPE-tasten
 // const INTRO_FOOTER = 'Press SPACE to play.';
 
-// starfield background
+// stjernefelt-baggrund
 const STAR_COUNT = 200;
 let stars = [];
 
@@ -145,11 +150,11 @@ class Star {
   }
 }
 
-// wall and corridor configuration (shared across files)
-let wallThickness = 140; // increased thickness so door sits within wall
+// konfiguration af vægge og korridor (delt på tværs af filer)
+let wallThickness = 140; // øget tykkelse så døren ligger inden for væggen
 const CORRIDOR_WIDTH = 200;
 
-// consoles (Alive / Dead / Both/neither) configuration
+// konfiguration af konsoller (Alive / Dead / Both/neither)
 let consoles = [
   { x: 0, y: 0, w: 100, h: 100, label: 'Alive' },
   { x: 0, y: 0, w: 100, h: 100, label: 'Both/neither' },

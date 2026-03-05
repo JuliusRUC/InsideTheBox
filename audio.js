@@ -1,11 +1,131 @@
+// Musik sat ind af agent. Al musik er royalty-free og brugt i overensstemmelse med licenserne. Se attributionssiden for detaljer.
+
 let musicAttributionLabel;
 let menuOutroMusic = null;
 
 function setupAudioSystem() {
   initBackgroundMusic();
   initMenuOutroMusic();
+  initGlassBreakSfx();
+  initThudImpactSfx();
   setupMusicAttributionLabel();
   syncMusicStateForCurrentScene();
+}
+
+function initThudImpactSfx() {
+  if (!THUD_IMPACT_SFX_FILE_PATH) {
+    thudImpactSfx = null;
+    return;
+  }
+
+  thudImpactSfx = new Audio(THUD_IMPACT_SFX_FILE_PATH);
+  thudImpactSfx.preload = 'auto';
+  thudImpactSfx.volume = min(1, musicVolume * 1.1);
+  thudImpactSfx.load();
+
+  thudImpactSfx.addEventListener('error', () => {
+    console.warn('Thud impact SFX file could not be loaded at:', THUD_IMPACT_SFX_FILE_PATH);
+  });
+}
+
+function initGlassBreakSfx() {
+  if (!GLASS_BREAK_SFX_FILE_PATH) {
+    glassBreakSfx = null;
+    return;
+  }
+
+  glassBreakSfx = new Audio(GLASS_BREAK_SFX_FILE_PATH);
+  glassBreakSfx.preload = 'auto';
+  glassBreakSfx.volume = min(1, musicVolume * 1.15);
+  glassBreakSfx.load();
+
+  glassBreakSfx.addEventListener('error', () => {
+    console.warn('Glass break SFX file could not be loaded at:', GLASS_BREAK_SFX_FILE_PATH);
+  });
+}
+
+function primeGlassBreakSfxFromUserGesture() {
+  if (!glassBreakSfx) return;
+  if (glassBreakSfx._primedByUserGesture) return;
+
+  let originalVolume = glassBreakSfx.volume;
+  glassBreakSfx.volume = 0;
+  glassBreakSfx.currentTime = 0;
+
+  glassBreakSfx.play().then(() => {
+    glassBreakSfx.pause();
+    glassBreakSfx.currentTime = 0;
+    glassBreakSfx.volume = originalVolume;
+    glassBreakSfx._primedByUserGesture = true;
+  }).catch(() => {
+    glassBreakSfx.volume = originalVolume;
+  });
+}
+
+function primeThudImpactSfxFromUserGesture() {
+  if (!thudImpactSfx) return;
+  if (thudImpactSfx._primedByUserGesture) return;
+
+  let originalVolume = thudImpactSfx.volume;
+  thudImpactSfx.volume = 0;
+  thudImpactSfx.currentTime = 0;
+
+  thudImpactSfx.play().then(() => {
+    thudImpactSfx.pause();
+    thudImpactSfx.currentTime = 0;
+    thudImpactSfx.volume = originalVolume;
+    thudImpactSfx._primedByUserGesture = true;
+  }).catch(() => {
+    thudImpactSfx.volume = originalVolume;
+  });
+}
+
+function playGlassBreakSfx() {
+  if (!glassBreakSfx) return;
+
+  let playNow = () => {
+    glassBreakSfx.currentTime = 0;
+    glassBreakSfx.play().catch((err) => {
+      console.warn('Glass break SFX could not be played:', err);
+    });
+  };
+
+  if (glassBreakSfx.readyState >= 2) {
+    playNow();
+    return;
+  }
+
+  let onReady = () => {
+    glassBreakSfx.removeEventListener('canplaythrough', onReady);
+    playNow();
+  };
+
+  glassBreakSfx.addEventListener('canplaythrough', onReady);
+  glassBreakSfx.load();
+}
+
+function playThudImpactSfx() {
+  if (!thudImpactSfx) return;
+
+  let playNow = () => {
+    thudImpactSfx.currentTime = 0;
+    thudImpactSfx.play().catch((err) => {
+      console.warn('Thud impact SFX could not be played:', err);
+    });
+  };
+
+  if (thudImpactSfx.readyState >= 2) {
+    playNow();
+    return;
+  }
+
+  let onReady = () => {
+    thudImpactSfx.removeEventListener('canplaythrough', onReady);
+    playNow();
+  };
+
+  thudImpactSfx.addEventListener('canplaythrough', onReady);
+  thudImpactSfx.load();
 }
 
 function initBackgroundMusic() {
@@ -58,6 +178,8 @@ function setupMusicAttributionLabel() {
 
 function startMusicFromUserGesture() {
   musicStartedByUser = true;
+  primeGlassBreakSfxFromUserGesture();
+  primeThudImpactSfxFromUserGesture();
   syncMusicStateForCurrentScene();
 }
 
@@ -77,7 +199,7 @@ function syncMusicStateForCurrentScene() {
   let shouldPlayMenuOutroMusic = gameState === 'start' || gameState === 'attributions' || (gameState === 'playing' && currentScene === 3);
 
   if (musicAttributionLabel) {
-    // attribution is now shown in dedicated scene, not in gameplay HUD
+    // Credits til kunstnere er givet i et dedikeret attributionsafsnit, så vi behøver ikke vise det på skærmen under gameplay eller menu-outro.
     musicAttributionLabel.hide();
   }
 
@@ -113,7 +235,7 @@ function playTrack(track) {
   }
 
   track.play().catch(() => {
-    // autoplay/user-gesture policy can block playback until a click gesture
+ 
     track._nextAutoPlayRetryAt = Date.now() + 250;
   });
 
@@ -134,6 +256,12 @@ function setMusicVolume(volumeValue) {
   }
   if (menuOutroMusic) {
     menuOutroMusic.volume = musicVolume;
+  }
+  if (glassBreakSfx) {
+    glassBreakSfx.volume = min(1, musicVolume * 1.15);
+  }
+  if (thudImpactSfx) {
+    thudImpactSfx.volume = min(1, musicVolume * 1.1);
   }
   if (typeof syncStartVolumeSlider === 'function') {
     syncStartVolumeSlider();

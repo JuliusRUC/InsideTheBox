@@ -21,9 +21,10 @@ function setupUI() {
   startPanel.addClass('start-panel');
   // AI hjælperen har lavet en fin startskærm til os, så vi kan bare bruge den
     startPanel.html(`
-      <h1>Welcome to<br><span class="brand">Inside the box</span></h1>
+      <h1>Welcome to<br><span class="brand">Inside The Box</span></h1>
       <p>Complete the game with the least amount of points.</p>
-
+      <p>Points are gained with every interaction</p>
+      <p>Be observative and try to find the optimal path!</p>
       <div class="control-box">
         <h3>Controls</h3>
         <ul class="control-list">
@@ -155,5 +156,5 @@ function hideOutroPanel() {
  * sometimes need a manual reposition if their size changes.
  */
 function windowResizedUI() {
-  // If needed, we could adjust size here; for now CSS handles centering.
+  // Hvis nødvendigt kan vi justere størrelsen her; lige nu håndterer CSS centreringen.
 }

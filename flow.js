@@ -1,3 +1,4 @@
+// Hammer falder på giftglasset
 function startHammerSmashSequence() {
   if (hammerSmashActive) return;
 
@@ -7,7 +8,7 @@ function startHammerSmashSequence() {
   hammerSmashActive = true;
   hammerSmashStartedAt = millis();
 }
-
+// Hammer falder den modsatte vej væk fra giftglasset
 function startHammerDropAwaySequence() {
   if (hammerSmashActive) return;
 
@@ -16,8 +17,9 @@ function startHammerDropAwaySequence() {
   vialBroken = false;
   hammerSmashActive = true;
   hammerSmashStartedAt = millis();
+  playThudImpactSfx();
 }
-
+// Funktion for spilarkitektur
 function resetToLevel1State(randomizeMouse = true) {
   currentScene = 1;
 
@@ -57,7 +59,7 @@ function resetToLevel1State(randomizeMouse = true) {
   hammerObj.x = vialObj.x + vialObj.w + 18 + hammerObj.handleLen / 2;
   hammerObj.y = vialObj.y;
 }
-
+// Funktion for få "Start game" knappen til at starte ved level 1.
 function startGameFromMenu() {
   resetToLevel1State(true);
   gameState = 'playing';
@@ -65,7 +67,7 @@ function startGameFromMenu() {
   hideOutroPanel();
   startMusicFromUserGesture();
 }
-
+// Funktion for at starte spillet igen med "Play again" knappen i outro.
 function playAgainFromOutro() {
   resetToLevel1State(true);
   gameState = 'playing';
@@ -74,7 +76,7 @@ function playAgainFromOutro() {
   restartMenuOutroMusicOnNextPlay = true;
   startMusicFromUserGesture();
 }
-
+// Funktion for at gå tilbage til menuen fra outro
 function goToMenuFromOutro() {
   resetToLevel1State(true);
   gameState = 'start';
@@ -82,14 +84,14 @@ function goToMenuFromOutro() {
   startPanel.show();
   syncMusicStateForCurrentScene();
 }
-
+// Funktion for at åbne attributionssiden fra menuen
 function openAttributionsFromMenu() {
   gameState = 'attributions';
   startPanel.hide();
   hideOutroPanel();
   syncMusicStateForCurrentScene();
 }
-
+// Funktion for at gå tilbage til menuen fra attributionssiden
 function returnToMenuFromAttributions() {
   gameState = 'start';
   startPanel.show();

@@ -1,8 +1,8 @@
 function updatePlayer() {
-  // prevent movement when info box is visible
+  // forhinder bevægelse når infoboksen er synlig
   if (infoVisible) return;
   
-  // movement always allowed (introRead logic removed)
+  // bevægelse er altid tilladt (introRead-logik fjernet)
   if (keyIsDown(LEFT_ARROW)) {
     player.x -= player.speed;
   }
@@ -15,7 +15,7 @@ function updatePlayer() {
   if (keyIsDown(DOWN_ARROW)) {
     player.y += player.speed;
   }
-  // keep player inside canvas bounds generally
+  // hold generelt spilleren inden for canvas-grænserne
   player.x = constrain(player.x, player.radius, width - player.radius);
 
   if (currentScene !== 2) {
@@ -29,12 +29,12 @@ function updatePlayer() {
   let corridorLeft = corridor.x + player.radius;
   let corridorRight = corridor.x + corridor.w - player.radius;
 
-  // vertical constraints: allow entering corridor only through the bottom opening
+  // lodrette begrænsninger: tillad kun adgang til korridoren gennem åbningen i bunden
   let topLimit = wallThickness + player.radius;
   let roomBottomLimit = height - wallThickness - player.radius;
   let insideCorridorDepth = player.y > roomBottomLimit;
 
-  // when inside corridor depth, keep player between corridor side walls
+  // når spilleren er inde i korridorens dybde, holdes den mellem sidevæggene
   if (insideCorridorDepth) {
     player.x = constrain(player.x, corridorLeft, corridorRight);
   }
@@ -45,7 +45,7 @@ function updatePlayer() {
 }
 
 function handleInteractionDisplay() {
-  // prevent interactions when info box is visible
+  // forhinder interaktioner når infoboksen er synlig
   if (infoVisible) return;
 
   let nonInteractMessages = [];
@@ -53,7 +53,7 @@ function handleInteractionDisplay() {
   let isNearBox = boxDistance < player.radius + boxObj.size / 2 + 8;
 
   if (!isNearBox) {
-    // scientist proximity prompt (level 2)
+    // nærhedstekst ved forskeren (level 2)
     if (currentScene === 2) {
       let scientistPos = getScene2ScientistPosition();
       let scientistX = scientistPos.x;
@@ -65,7 +65,7 @@ function handleInteractionDisplay() {
       }
     }
 
-    // hammer proximity prompt
+    // nærhedstekst ved hammeren
     if (hammerVisible) {
       let handleLen = vialObj.h * 1.28;
       let handleW = max(8, vialObj.w * 0.27);
@@ -79,7 +79,7 @@ function handleInteractionDisplay() {
       }
     }
 
-    // poison vial proximity prompt
+    // nærhedstekst ved giftglasset
     if (!vialBroken) {
       let vialTriggerDistance = player.radius + max(vialObj.w, vialObj.h) / 2 + 8;
       if (dist(player.x, player.y, vialObj.x, vialObj.y) < vialTriggerDistance) {
@@ -101,7 +101,7 @@ function handleInteractionDisplay() {
     pop();
   }
   
-  // if near box
+  // hvis spilleren er tæt på kassen
   if (isNearBox) {
     push();
     textSize(14);
@@ -112,7 +112,7 @@ function handleInteractionDisplay() {
     text('Press SPACE to look inside', player.x, player.y - player.radius - 10);
     pop();
     
-    // if looked inside and still near box, show message
+    // hvis spilleren har kigget ind og stadig er tæt på kassen, vis besked
     let showScene1Message = currentScene === 1 && lookedInBox;
     let showScene2Message = currentScene === 2 && scene2LookedInBox;
     if (showScene1Message || showScene2Message) {
@@ -134,7 +134,7 @@ function handleInteractionDisplay() {
       pop();
     }
   } else {
-    // if moved away from box, reset the flag for current scene
+    // hvis spilleren går væk fra kassen, nulstil flaget for den aktuelle scene
     if (currentScene === 2) {
       scene2LookedInBox = false;
     } else {
@@ -142,7 +142,7 @@ function handleInteractionDisplay() {
     }
   }
 
-  // consoles interaction prompts
+  // interaktions-tekster ved konsoller
   for (let c of consoles) {
     let dc = dist(player.x, player.y, c.x, c.y);
     if (dc < player.radius + Math.max(c.w, c.h) / 2 + 8) {
@@ -165,11 +165,11 @@ function keyPressed() {
     return;
   }
 
-  // record key for on-screen debug
+  // registrér tast til debug-visning på skærmen
   pressedKeys.push(key);
   if (pressedKeys.length > 5) pressedKeys.shift();
 
-  // always allow toggling the info overlay with ESCAPE key
+  // tillad altid at skifte info-overlay med ESCAPE-tasten
   if (keyCode === ESCAPE) {
     infoVisible = !infoVisible;
     console.log('infoVisible toggled', infoVisible, 'key', key, 'keyCode', keyCode);
@@ -178,7 +178,7 @@ function keyPressed() {
 
   if (gameState === 'playing') {
     if (key === ' ') {
-      // prevent interactions when info box is visible
+      // forhinder interaktioner når infoboksen er synlig
       if (infoVisible) return;
 
       if (currentScene === 2) {
@@ -202,14 +202,14 @@ function keyPressed() {
       if (pendingScene2At !== 0) return;
       if (hammerSmashActive) return;
       
-      // interactions triggered by space
+      // interaktioner udløses med mellemrumstasten
       let d = dist(player.x, player.y, boxObj.x, boxObj.y);
       if (d < player.radius + boxObj.size / 2 + 8) {
         lookedInBox = true;
         hasCheckedBox = true;
         interactionPoints += 1;
       }
-      // check consoles and submit answer for each one within range
+      // tjek konsoller og indsend svar for hver konsol inden for rækkevidde
       for (let c of consoles) {
         let dc = dist(player.x, player.y, c.x, c.y);
         if (dc < player.radius + Math.max(c.w, c.h) / 2 + 8) {

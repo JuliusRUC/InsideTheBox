@@ -6,21 +6,21 @@ function setup() {
 
   updateResponsiveLayoutMetrics();
 
-  // normally start screen, gameState remains 'start'
+  // starter normalt på startskærmen, spiltilstanden forbliver 'start'
 
-  // Lav stjernerne i så de kan blive tegnet i draw()
+  // lav stjernerne, så de kan blive tegnet i draw()
   createStars(STAR_COUNT);
 
-  // initialiser player ved starten af korridoren
+  // initialiser spilleren ved starten af korridoren
   placePlayerInRoom();
   boxObj.x = width / 2;
   boxObj.y = height / 2;
   updateConsoles();
-  // position the vial near the box (to the left of the box)
-  // place vial in bottom-left corner inside the walls
+  // placér hætteglasset nær kassen (til venstre for kassen)
+  // placér hætteglasset i nederste venstre hjørne inden for væggene
   vialObj.x = wallThickness + vialObj.w + 12;
   vialObj.y = height - wallThickness - vialObj.h / 2 - 12;
-  // place hammer to the right of the vial with some spacing
+  // placér hammeren til højre for hætteglasset med lidt afstand
   hammerObj.x = vialObj.x + vialObj.w + 18 + hammerObj.handleLen / 2;
   hammerObj.y = vialObj.y;
 
@@ -42,14 +42,14 @@ function draw() {
     if (currentScene === 1) {
       processHammerSmashSequence();
 
-      // draw the room and objects first
+      // tegn rummet og objekterne først
       drawRoom();
       drawInteractionPoints();
       drawPlayer();
-      // draw the info overlay if visible
+      // tegn info-overlayet hvis det er synligt
       drawIntroOverlay();
 
-      // player may move and interact regardless of overlay state
+      // spilleren kan bevæge sig og interagere uanset overlayets tilstand
       updatePlayer();
       handleInteractionDisplay();
       drawWrongPopup();

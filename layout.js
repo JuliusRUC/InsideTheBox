@@ -16,10 +16,10 @@ function windowResized() {
   boxObj.x = width / 2;
   boxObj.y = height / 2;
   updateConsoles();
-  // reposition vial to bottom-left corner when resizing
+  // flyt hætteglasset til nederste venstre hjørne ved resize
   vialObj.x = wallThickness + vialObj.w + 12;
   vialObj.y = height - wallThickness - vialObj.h / 2 - 12;
-  // reposition hammer as well
+  // flyt også hammeren
   hammerObj.x = vialObj.x + vialObj.w + 18 + hammerObj.handleLen / 2;
   hammerObj.y = vialObj.y;
 
@@ -97,10 +97,14 @@ function processScene2WakeSequence() {
 function processHammerSmashSequence() {
   if (!hammerSmashActive) return;
 
-  let t = constrain((millis() - hammerSmashStartedAt) / HAMMER_SMASH_DURATION, 0, 1);
+  let elapsedMs = millis() - hammerSmashStartedAt;
+  let t = constrain(elapsedMs / HAMMER_SMASH_DURATION, 0, 1);
+  let baseBreakMs = HAMMER_SMASH_DURATION * 0.62;
+  let breakTriggerMs = max(0, baseBreakMs - HAMMER_GLASS_BREAK_ADVANCE_MS);
 
-  if (hammerAnimationMode === 'smash' && t >= 0.62) {
+  if (hammerAnimationMode === 'smash' && elapsedMs >= breakTriggerMs && !vialBroken) {
     vialBroken = true;
+    playGlassBreakSfx();
   }
 
   if (t >= 1) {
